@@ -1,0 +1,21 @@
+header{
+	text-align:center;
+}
+
+.fa-facebook{
+    padding-right: 10px;
+}
+
+#logout{
+    position:absolute;
+    margin-left: 35%;
+}
+
+.required{
+    color:red;
+}
+
+footer{
+    background-color:lightgray;
+    text-align: center;
+}
