@@ -1,46 +1,34 @@
 <?php
 
-  $error;
-  $succes;
+session_start();
 
+    spl_autoload_register(function ($class) {
+    include_once("classes/".$class.".class.php");
+    });
 
-Feest het is weekend!
-
-github sucked
-
-	if (!empty($_POST)) 
+     if(!empty ($_POST['login']))
     {
+        spl_autoload_register( function($class){
+            include_once("classes/" . $class . ".class.php");
+        } );
+         
         try
         {
-            
-		$salt = "DMIqsegmiF§MEIfjé2";
-		$Gebruikersnaam = $_POST['gebruikersnaam'];
-		$options = [ 'cost' => 12,];
-		$Wachtwoord = password_hash($_POST['wachtwoord'], PASSWORD_DEFAULT, $options); // php 5.5
-
-		$conn = new mysqli("localhost", "root", "root", "phpproject");
-		if (!$conn->connect_errno) {
+            $userlogin = new User();
+            $userlogin->Email = htmlspecialchars($_POST['email']);
+            $userlogin->Password = htmlspecialchars($_POST['wachtwoord']);
+            $userlogin->Login();
+            $succes = "Thanks for signing up!";
+            //echo $succes;
+        }
+        catch( Exception $e )
+        {
+            $error = $e->getMessage();
+            //echo $error;
            
-			$query = "SELECT * FROM gids WHERE gids_email = '".$conn->real_escape_string($Gebruikersnaam)."';";
-			$result = $conn->query($query);
-			// echo $query;
-			// check of password_verify(wachtwoord) == hash
-			$row_hash = $result->fetch_array();
-			if (password_verify($Wachtwoord, $row_hash['wachtwoord'])) 
-			{
-				$succes = "u bent ingelogd";
-			}
         }
-        }
-        
-			catch (Exception $e)
-		{
-			$error = $e->getMessage();
-		}
-    }
+    }        
 
-
-?>
 
 
 <!DOCTYPE html>
@@ -133,7 +121,7 @@ github sucked
             <form class="form-inline" role="form">
                 <div class="form-group">
                   <label class="sr-only" for="gebruikersnaam">Gebruikersnaam:</label>
-                  <input type="email" class="form-control" name= "gebruikersnaam" id="email" placeholder="Gebruikersnaam">
+                  <input type="email" class="form-control" name= "email" id="email" placeholder="Gebruikersnaam">
                 </div>
                 <div class="form-group">
                   <label class="sr-only" for="pwd">Wachtwoord:</label>
