@@ -1,33 +1,35 @@
-<?php
+<?php 
 
-session_start();
 
-    spl_autoload_register(function ($class) {
+ session_start();
+
+if(isset($_SESSION['gebruikersnaam'])){
+        header("location: home.php");
+}
+
+ spl_autoload_register(function ($class) {
     include_once("classes/".$class.".class.php");
     });
 
-     if(!empty ($_POST['login']))
+
+    if(!empty ($_POST['login']))
     {
-        spl_autoload_register( function($class){
-            include_once("classes/" . $class . ".class.php");
-        } );
-         
         try
         {
-            $userlogin = new User();
-            $userlogin->Email = htmlspecialchars($_POST['email']);
-            $userlogin->Password = htmlspecialchars($_POST['wachtwoord']);
-            $userlogin->Login();
-            $succes = "Thanks for signing up!";
-            //echo $succes;
+            $studentlogin = new Student();
+            $studentlogin->gebruikersnaam = htmlspecialchars($_POST['gebruikersnaam']);
+            $studentlogin->wachtwoord = htmlspecialchars($_POST['wachtwoord']);
+            $studentlogin->Login();
         }
-        catch( Exception $e )
+        catch (Exception $e)
         {
             $error = $e->getMessage();
-            //echo $error;
-           
         }
-    }        
+    }
+
+	
+ ?>
+
 
 
 
@@ -71,29 +73,29 @@ session_start();
 
             <!--LOGOUT-->
             <?php if (isset($_SESSION['FBID'])){ ?>
-            <a id="logout" href="facebook/logout.php">Logout</a>
+                <a id="logout" href="facebook/logout.php">Logout</a>
             <?php } ?>
 
-            <h1>Rent-A-Student</h1>
+            <a href="index.php"><img src="img/vector-logo.png" alt="logo"></a>
             <p>Lorem Ipsum is slechts een proeftekst uit het drukkerij- en zetterijwezen.</p>
             
             <!--FACEBOOK-->
             <?php if(isset($_SESSION['FBID'])){ ?>
-            <!--  After user login  -->
-            <img class="img-rounded" src="https://graph.facebook.com/<?php echo $_SESSION['FBID']; ?>/picture">
-            <?php echo $_SESSION['FULLNAME']; ?>
+                <!--  After user login  -->
+                <img class="img-rounded" src="https://graph.facebook.com/<?php echo $_SESSION['FBID']; ?>/picture">
+                <?php echo $_SESSION['FULLNAME']; ?>
             <?php }else{ ?>
-            <!--  Before user login  -->  
-            <a href="facebook/fbconfig.php">
-            <button class="btn btn-facebook"><i class="fa fa-facebook"></i>Log in met facebook</button>
-            </a>
+                <!--  Before user login  -->  
+                <a href="facebook/fbconfig.php">
+                <button class="btn btn-facebook"><i class="fa fa-facebook"></i>Log in met facebook</button>
+                </a>
             <?php } ?> 
         </header>
 
         <!--NAV-->
         <nav>
             <ul class="nav nav-tabs nav-justified">
-              <li><a href="">Home</a></li>
+              <li><a href="index.php">Home</a></li>
               <li><a href="">About us</a></li>
               <li><a href="">Contact</a></li>
             </ul>
@@ -121,13 +123,13 @@ session_start();
             <form class="form-inline" role="form">
                 <div class="form-group">
                   <label class="sr-only" for="gebruikersnaam">Gebruikersnaam:</label>
-                  <input type="email" class="form-control" name= "email" id="email" placeholder="Gebruikersnaam">
+                  <input type="email" class="form-control" name= "gebruikersnaam" id="email" placeholder="Gebruikersnaam">
                 </div>
                 <div class="form-group">
                   <label class="sr-only" for="pwd">Wachtwoord:</label>
                   <input type="password" class="form-control" name="wachtwoord" id="pwd" placeholder="Wachtwoord">
                 </div>
-                <button type="submit" class="btn btn-default">Verstuur</button>
+                <button type="submit" class="btn btn-default" name="login" value="login">Verstuur</button>
                 <br>
                 <div class="checkbox">
                   <label><input type="checkbox"> Aangemeld blijven</label>

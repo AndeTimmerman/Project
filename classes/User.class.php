@@ -15,7 +15,7 @@
         private $m_sCity;
         private $m_sBio;
 
-        //SET-----------------------æ-----------------
+        //SET----------------------------------------
         public function __set($p_sProperty,$p_vValue)
         {
                 switch($p_sProperty)
@@ -107,12 +107,10 @@
         
 
         
-      
-        
-                public function checkExistingEmail()
+        public function checkExistingEmail()
         {
             $conn = Db::getInstance();
-            $statement = $conn->prepare("SELECT gids_email FROM gids WHERE gids_email = :email");
+            $statement = $conn->prepare("SELECT gids_email FROM gids WHERE gids_email = :gebruikersnaam");
             $statement->bindParam(":email", $this->m_sEmail);
             $statement->execute();
 
@@ -138,25 +136,24 @@
             if($statement->rowCount() == 1)
             {
                 session_start();
-                //$_SESSION['id'] = $result['id'];
-                $_SESSION['email'] = $result['email'];
-                $_SESSION['wachtwoord'] = $result['wachtwoord'];
-                header("location: index.php");
+                $_SESSION['gids_id'] = $result['gids_id'];
+                $_SESSION['gids_email'] = $result['gids_email'];
+                $_SESSION['gids_wachtwoord'] = $result['gids_wachtwoord'];
+                header("location: home.php");
             }
             else
             {
-                throw new Exception ("E-mail of wachtwoord zijn onjuist!");
+                throw new Exception ("E-mail of wachtwoord zijn onjuist");
             }
         }
 
         public static function Logout()
         {
-            //unset($_SESSION['id']);
-            unset($_SESSION['email']);
-            unset($_SESSION['wachtwoord']);
+            unset($_SESSION['gids_id']);
+            unset($_SESSION['gids_email']);
+            unset($_SESSION['gids_wachtwoord']);
             header("location: index.php");
         }
-
         
         
         

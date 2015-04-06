@@ -1,14 +1,18 @@
-header{
+.jumbotron {
 	text-align:center;
 }
 
-.fa-facebook{
+header{
     padding-right: 10px;
+}
+
+.fa-facebook{
+    margin-right: 10px;
 }
 
 #logout{
     position:absolute;
-    margin-left: 35%;
+    margin-left: 48%;
 }
 
 .required{
